@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sağlıklı Beslenme Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .question-card {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .options {
+            margin-left: 20px;
+        }
+        .option {
+            margin: 8px 0;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        .option.selected {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            display: none;
+        }
+        .correct {
+            color: #28a745;
+        }
+        .incorrect {
+            color: #dc3545;
+        }
+        #score {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sağlıklı Beslenme Quiz</h1>
+    <button onclick="shuffleQuestions()">Soruları Karıştır</button>
+    <button onclick="showResults()">Sonuçları Göster</button>
+    <p>Tüm soruları çözmeden Sonuçları Göster butonuna tıklarsanız çalışmaz. Hepsini ç</p>
+    <div id="score"></div>
+    <div id="questions-container"></div>
+    <div id="results"></div>
+
+    <script>
+        const questions = [
+            {
+                question: "Aşağıdakilerden hangisi toplumda beslenme sorununu oluşmasının temel nedenlerinden değildir?",
+                options: [
+                    "Besin dağıtımı ve teknolojisindeki yetersizlik ve düzensizlikler, ",
+                    "Ailenin besin satın alma gücünün artması ",
+                    "Eğitim ve bilinç düzey yetersizlği",
+                    "Sosyo-kültürel etmenler"
+                ],
+                correctAnswer: 1  // d cvp 0
+            },
+            {
+                question: "Yetersiz beslenmeden en çok etkilenen gruplar kimlerdir?",
+                options: [
+                    "Emzikli kadınlar ",
+                    "Çalışanlar ",
+                    "Sporcular ",
+                    "Ev hanımları "
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Çocuklarda büyümenn zlenmesnde aşağıdaklerden hangs değerlendrlmez.?",
+                options: [
+                    "Yaşa göre boy uzunluğu ",
+                    "Yaşa göre vücut ağırlığı ",
+                    "Yaşa göre ayak büyüklüğü ",
+                    "Boy uzunluğuna göre vücut ağırlığı"
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Çocuklarda beslenme yeterli olmazsa aşağıdakilerden hangisi gelişebilir?",
+                options: [
+                    "Yaşıtlarından geç konuşur",
+                    "Yaşıtlarına göre erken oturur",
+                    "Yaşıtlarına göre daha hareketlidir",
+                    "Yaşıtlarına göre daha kısadır"
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Bir ya da daha fazla elzem besin ögesinin yetersiz veya aşırı alımı ile sonuçlanan patolojik durum aşağıdakilerden hangisidir?",
+                options: [
+                    "Malnitrisyon",
+                    "Obsturiksiyon",
+                    "Anoreksiya",
+                    "Malabsorbsiyon"
+                ],
+                    correctAnswer: 0
+            },
+            {
+                question: "Aşağıdakilerden hangisi yetersiz ve dengesiz beslenme sonucu gelişen hastalıklardan değildir?",
+                options: [
+                    "Diyabet hastalığı",
+                    "Hepatit",
+                    "Anemi",
+                    "Kanser"
+                ],
+                    correctAnswer: 1
+            },
+            {
+                question: "Protein alımındaki yetersizliğe göre enerji alımındaki yetersizlik ön planda olduğu hastalık aşağıdakilerden hangisidir?",
+                options: [
+                    "Kuvashiorkor",
+                    "Diyabet",
+                    "Marasmik kuvashiorkor",
+                    "Marasmus"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Anne sütü ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+                options: [
+                    "İlk 6 ayda bebeğin ihtiyacının %100’ünü karşılar",
+                    "6-12 ayda bebeğin ihtiyacının %75’ini karşılar",
+                    "6-12 ayda bebeğin ihtiyacının %50’sini karşılar",
+                    "12. aydan sonra da %30’unu karşılar"
+                ],
+                    correctAnswer: 2
+            },
+            {
+                question: "Besinlerle günlük alınması gereken iyot miktarı ne kadardır?",
+                options: [
+                    "Bir çorba kaşığı kadar",
+                    "Bir tatlı kaşığı kadar",
+                    "Bir çay kaşığı kadar",
+                    "Toplu iğne başı kadar"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Aşağıdakilerden hangisi çocuklarda raştizmde görülen bulgulardan değildir?",
+                options: [
+                    "Bingıldakları geç kapanır",
+                    "Dişleri geç çıkar",
+                    "Erken yürürler",
+                    "Hastalıklara kolay yakalanırlar"
+                ],
+                    correctAnswer: 2
+            },
+            {
+                question: "Türk dil kurumuna göre obezitenin kelime anlamı nedir?",
+                options: [
+                    "Şişman",
+                    "Çok yemek yiyen",
+                    "Obur",
+                    "Kilolu"
+                ],
+                    correctAnswer: 0
+            },
+            {
+                question: "Yetişkin kadınlarda vücut yağ oranı kaçın üzerine çıkarsa obezite olarak tanımlanır?",
+                options: [
+                    "Yüzde 15",
+                    "Yüzde 20",
+                    "Yüzde 25",
+                    "Yüzde 30"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Aşağıdakilerden hangisi obezite gelişmesini etkileyen faktörlerden değildir?",
+                options: [
+                    "Enerji alımının fazlalığı",
+                    "Gıda çeşitliliğinin artması",
+                    "Enerji harcamasının azlığı",
+                    "Hormonal mekanizmalar"
+                ],
+                    correctAnswer: 1
+            },
+            {
+                question: "Aşağıdaki rahatsızlığın hangisine obez kişilerde sık rastlanılmaz?",
+                options: [
+                    "Anemi",
+                    "Hipertansiyon",
+                    "Kalp krizi",
+                    "Safra taşı"
+                ],
+                    correctAnswer: 0
+            },
+            {
+                question: "Erkeklerin bel çevresi kaçın üzerinde ise yüksek hastalık riski vardır?",
+                options: [
+                    "92 cm büyük ise",
+                    "96 cm büyük ise",
+                    "100 cm büyük ise",
+                    "102 cm büyük ise"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Aşağıdakilerden hangisi yeme bozukluklarına neden olan sosyo-kültürel etmenlerden değildir?",
+                options: [
+                    "Nerdeyse her gün yayınlanan zayıflama reçeteleri",
+                    "Kadın ve erkekler için güzellik standartları zaman içinde değişmesi",
+                    "Kadınlar zayıf olmanın desteklendiği kültürel baskıdan daha fazla etkilenmektedir",
+                    "Yeme alışkanlıklarında değişme"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Anoreksiya ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
+                options: [
+                    "Anoreksiya terimi duygusal nedenlere, nevroza ise iştah kaybına işaret etmektedir",
+                    "Anoreksiya terimi iştah kaybına, nevroza ise duygusal nedenlere işaret etmektedir",
+                    "Sosyal ortamlarda aile ile yemek yemeyi severler",
+                    "Düzenli adet görebilirler"
+                ],
+                    correctAnswer: 1
+            },
+            {
+                question: "Aşağıdakilerden hangisi bulimiya nevrozanın etiyolojik faktörlerinden değildir?",
+                options: [
+                    "Diyet yapma",
+                    "Alkolizm, erken ergenlik",
+                    "Sevgi dolu bir aile ortamı",
+                    "Cinsel kötüye kullanım"
+                ],
+                    correctAnswer: 2
+            },
+            {
+                question: "El sırtında yaraya yol açan rahatsızlık aşağıdakilerden hangisidir?",
+                options: [
+                    "Bulimiya nevroza",
+                    "Anoreksiya nevroza",
+                    "Nevrotik sendrom",
+                    "Tıkanırcasına yeme bozukluğu"
+                ],
+                    correctAnswer: 0
+            },
+            {
+                question: "Normalde besin olarak tüketilmeyen ve kabul edilmeyen maddelerin ısrarla ve sürekli olarak tüketilmesi alışkanlığı aşağıdakilerden hangisidir?",
+                options: [
+                    "Gut",
+                    "Reğürjitasyon",
+                    "Konstipasyon",
+                    "Pika"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Maslow’un temel ihtiyaçlar hiyerarşisinde beslenme nerede yer alır?",
+                options: [
+                    "Fizyolojik ihtiyaçlar",
+                    "Güvenlik ihtiyacı",
+                    "Sosyal ihtiyaçlar",
+                    "Değer verilme/saygınlık ihtiyacı"
+                ],
+                    correctAnswer: 0
+            },
+            {
+                question: "Skorbit hastalığını tedavi eden vitamin aşağıdakilerden hangisidir?",
+                options: [
+                    "A vitamini",
+                    "B vitamini",
+                    "C vitamini",
+                    "D vitamini"
+                ],
+                    correctAnswer: 2
+            },
+            {
+                question: "Bireyde beslenme sorunu varsa aşağıdaki durumlardan hangisi ile karşılaşılmaz?",
+                options: [
+                    "Bağışıklık sistemi yetersiz hale gelir",
+                    "Yara iyileşmesi gecikir",
+                    "Kas gücünde yetersizlik görülür",
+                    "Psikolojik iyilik hali artar"
+                ],
+                    correctAnswer: 3
+            },
+
+            {
+                question: "Aşağıdakilerden hangisini yeterli ve dengeli beslenen bir kişinin dış görünüşünde görmeyiz?",
+                options: [
+                    "Hareketli dikkatli bakışlar",
+                    "Şişkin bir karın",
+                    "Canlı ve parlak saçlar",
+                    "Kuvvetli gelişimi normal kaslar"
+                ],
+                    correctAnswer: 1
+            },
+            {
+                question: "Hayatın sürmesi için hücre içinde oluşan tüm kimyasal değişmelere ne denir?",
+                options: [
+                    "Sındırim",
+                    "Emilim",
+                    "Besin öğesi",
+                    "Metabolizma"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Aşağıdakilerden hangisi sağlıklı beslenme önerilerinden değildir?",
+                options: [
+                    "Taze sebze-meyve tüketimi artırılmalıdır",
+                    "Vücut ağırlığı önerilen düzeyde tutulmalıdır",
+                    "Günlük fiziksel aktivite düzeyi artırılmalıdır",
+                    "Her öğünde sevdiğimiz besinleri tüketmeliyiz"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Hangisi karbonhidratların en basit hali olup daha küçük parçalara ayrılamaz?",
+                options: [
+                    "Monosakkarit",
+                    "Polisakkarit",
+                    "Tetrasakkarit",
+                    "Disakkarit"
+                ],
+                    correctAnswer: 0
+            },
+            {
+                question: "Aşağıdakilerden hangisi suda eriyen vitaminlerdendir?",
+                options: [
+                    "A vitamini",
+                    "B vitamini",
+                    "D vitamini",
+                    "E vitamini"
+                ],
+                    correctAnswer: 1
+            },
+            {
+                question: "Kemiklerin büyümesini sağlayan vitamin hangisidir?",
+                options: [
+                    "A vitamini",
+                    "B vitamini",
+                    "C vitamini",
+                    "D vitamini"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Beynin tek enerji kaynağı olan glikoz hangi besin öğesinden alınır?",
+                options: [
+                    "Protein",
+                    "Yağ",
+                    "Karbonhidrat",
+                    "Mineral"
+                ],
+                    correctAnswer: 2
+            },
+            {
+                question: "Aşağıdaki besin ögelerinden hangisi enerji vermez?",
+                options: [
+                    "Karbonhidratlar",
+                    "Proteinler",
+                    "Yağlar",
+                    "Vitaminler"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Aşağıdakilerden hangisi beslenmeye etki eden faktörlerden biri olarak kabul edilmez?",
+                options: [
+                    "Yaş",
+                    "Cinsiyet",
+                    "Yaşam tarzı",
+                    "Kan grubu"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                question: "Besin grupları hangi özelliklerine göre sınıflandırılır?",
+                options: [
+                    "Üretildikleri bölgeye göre",
+                    "İçerdikleri benzer besin ögelerine göre",
+                    "Lezzetlerine göre",
+                    "Renklerine göre"
+                ],
+                    correctAnswer: 1
+            },
+            {
+                question: "Aşağıdakilerden hangisi osteoporoz riskini artıran bir faktördür?",
+                options: [
+                    "Yetersiz kalsiyum alımı",
+                    "Düzenli fiziksel aktivite",
+                    "Yüksek protein alımı",
+                    "Yeterli vitamin D alımı"
+                ],
+                    correctAnswer: 0
+            },
+            {
+                question: "Aşağıdakilerden hangisi proteinlerin temel yapı taşlarıdır?",
+                options: [
+                    "Karbonhidratlar",
+                    "Amino asitler",
+                    "Yağlar",
+                    "Vitaminler"
+                ],
+                    correctAnswer: 1
+            },
+            {
+                question: "Aşağıdaki vitaminlerden hangisi kanın pıhtılaşmasını sağlar?",
+                options: [
+                    "Vitamin A",
+                    "Vitamin D",
+                    "Vitamin E",
+                    "Vitamin K"
+                ],
+                    correctAnswer: 3
+            },
+            {
+                qquestion: "Kalp-damar hastalıkları riskini azaltmak için önerilen bir besin grubu aşağıdakilerden hangisidir?",
+                options: [
+                    "Şekerli gıdalar",
+                    "Trans yağlar",
+                    "Omega-3 yağ asitleri içeren balıklar",
+                    "Kırmızı et"
+                ],
+                    correctAnswer: 2
+            },
+            {
+                question: "Beslenme biliminin gelişiminde aşağıdaki bilim dallarından hangisinin rolü olmamıştır?",
+                options: [
+                    "Fizyoloji",
+                    "Biyokimya",
+                    "Felsefe",
+                    "Veterinerlik"
+                ],
+                    correctAnswer: 2
+            },
+            {
+                question: "Anne sütü hangi dönemde sadece verilmelidir?",
+                options: [
+                    "İlk 6 ay",
+                    "İlk 4 ay",
+                    "İlk 3 ay",
+                    "İlk 12 ay"
+                ],
+                    correctAnswer: 0
+            },
+            {
+                question: "Büyümenin izlenmesinde kullanılan doğrudan metotlardan biri nedir?",
+                options: [
+                    "Tıbbi istatistikler",
+                    "Antropometrik ölçümler",
+                    "Besin tüketim araştırmaları",
+                    "Hayati istatistikler"
+                ],
+                    correctAnswer: 1
+            }
+        ];
+        
+
+        let currentQuestions = [];
+        let userAnswers = {};
+
+        // print
+        function shuffleQuestions() {
+            const container = document.getElementById("questions-container");
+            container.innerHTML = "";
+            userAnswers = {};
+            document.getElementById("results").style.display = "none";
+            document.getElementById("score").innerHTML = "";
+
+            // random
+            currentQuestions = [...questions].sort(() => Math.random() - 0.5);
+
+            currentQuestions.forEach((q, index) => {
+                const questionCard = document.createElement("div");
+                questionCard.className = "question-card";
+                questionCard.dataset.index = index;
+
+                // option random
+                const shuffledOptions = [...q.options];
+                const correctAnswerText = shuffledOptions[q.correctAnswer];
+                
+                //for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                 //   const j = Math.floor(Math.random() * (i + 1));
+                 //   [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+                //}
+
+
+                const newCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
+                currentQuestions[index].shuffledCorrectAnswer = newCorrectIndex;
+
+
+                questionCard.innerHTML = `
+                    <div class="question-text">${index + 1}. ${q.question}</div>
+                    <div class="options">
+                        ${shuffledOptions.map((opt, i) => `
+                            <div class="option" data-option="${i}" onclick="selectOption(${index}, ${i})">
+                                ${String.fromCharCode(65 + i)}) ${opt}
+                            </div>
+                        `).join("")}
+                    </div>
+                `;
+
+                container.appendChild(questionCard);
+            });
+        }
+
+
+        function selectOption(questionIndex, optionIndex) {
+            const questionCard = document.querySelector(`.question-card[data-index="${questionIndex}"]`);
+            const options = questionCard.querySelectorAll(".option");
+
+            options.forEach(opt => opt.classList.remove("selected"));
+            options[optionIndex].classList.add("selected");
+            userAnswers[questionIndex] = optionIndex;
+        }
+
+        // result
+        function showResults() {
+            if (Object.keys(userAnswers).length < currentQuestions.length) {
+                alert("Lütfen tüm soruları cevaplayın!");
+                return;
+            }
+
+            let correctCount = 0;
+            let resultsHTML = "<h2>Sonuçlar</h2>";
+
+            currentQuestions.forEach((q, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === q.shuffledCorrectAnswer;
+                
+                if (isCorrect) correctCount++;
+
+                resultsHTML += `
+                    <div class="question-card ${isCorrect ? 'correct' : 'incorrect'}">
+                        <div class="question-text">${index + 1}. ${q.question}</div>
+                        <div><strong>Senin Cevabın:</strong> ${String.fromCharCode(65 + userAnswer)}) ${q.options[userAnswer]}</div>
+                        <div><strong>Doğru Cevap:</strong> ${String.fromCharCode(65 + q.shuffledCorrectAnswer)}) ${q.options[q.shuffledCorrectAnswer]}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById("score").innerHTML = `
+                <span>Puan: ${correctCount} / ${currentQuestions.length}</span>
+            `;
+            document.getElementById("results").innerHTML = resultsHTML;
+            document.getElementById("results").style.display = "block";
+        }
+
+        // refresh random
+        window.onload = shuffleQuestions;
+    </script>
+    <button onclick="showResults()">Sonuçları Göster</button>
+</body>
+</html>
