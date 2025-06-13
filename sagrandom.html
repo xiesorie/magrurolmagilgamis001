@@ -190,7 +190,7 @@
     <div id="results"></div>
 
     <script>
-        // 120 soruluk veri seti (örnek olarak 6 soru gösteriliyor, gerçekte 120 soru olacak)
+        
         const allQuestions = [
             {
                 question: "ARP Poisoning saldırısının temel prensibi nedir?",
@@ -1720,9 +1720,9 @@
         let askedQuestions = 0;
         const QUESTIONS_PER_ROUND = 20;
 
-        // Soruları karıştır ve yeni 20 soru getir
+        
         function shuffleQuestions() {
-            // Eğer 120 soru sorulduysa uyarı ver
+            
             if (askedQuestions >= allQuestions.length) {
                 alert("Tüm sorular gösterildi! Başka soru kalmadı.");
                 return;
@@ -1734,26 +1734,26 @@
             document.getElementById("results").style.display = "none";
             document.getElementById("score").innerHTML = "";
 
-            // Daha önce sorulmamış soruları filtrele
+            
             const availableQuestions = allQuestions.filter(q => !q.asked);
 
-            // Rastgele 20 soru seç (veya kalan soruların hepsini)
+            
             const questionsToAsk = Math.min(QUESTIONS_PER_ROUND, availableQuestions.length);
             currentQuestions = [...availableQuestions]
                 .sort(() => Math.random() - 0.5)
                 .slice(0, questionsToAsk);
 
-            // Seçilen soruları "soruldu" olarak işaretle
+            
             currentQuestions.forEach(q => q.asked = true);
             askedQuestions += currentQuestions.length;
 
-            // Soruları ekrana yaz
+            
             currentQuestions.forEach((q, index) => {
                 const questionCard = document.createElement("div");
                 questionCard.className = "question-card";
                 questionCard.dataset.index = index;
 
-                // Seçenekleri karıştır
+                
                 const shuffledOptions = [...q.options];
                 const correctAnswerText = shuffledOptions[q.correctAnswer];
 
@@ -1779,7 +1779,7 @@
                 container.appendChild(questionCard);
             });
 
-            // Kalan soru bilgisini güncelle
+            
             updateRemainingInfo();
         }
 
@@ -1803,7 +1803,7 @@
             userAnswers[questionIndex] = optionIndex;
         }
 
-        // Sonuçları göster
+        
         function showResults() {
             if (Object.keys(userAnswers).length < currentQuestions.length) {
                 alert("Lütfen tüm soruları cevaplayın!");
@@ -1835,7 +1835,7 @@
             document.getElementById("results").style.display = "block";
         }
 
-        // Sayfa yüklendiğinde ilk 20 soruyu yükle
+        
         window.onload = function () {
             updateRemainingInfo();
             shuffleQuestions();
@@ -1853,24 +1853,24 @@
                 return;
             }
 
-            // Animasyonu başlat
+            
             trashCan.classList.add("visible");
 
-            // 1.5 saniye sonra teşekkür mesajını göster
+            
             setTimeout(() => {
                 thanksMessage.style.display = "block";
 
-                // Formu temizle
+                
                 document.getElementById("feedback-text").value = "";
 
-                // 3 saniye sonra animasyonu sıfırla
+                
                 setTimeout(() => {
                     trashCan.classList.remove("visible");
                     thanksMessage.style.display = "none";
                 }, 3000);
             }, 1500);
 
-            // Burada gerçekte bir sunucuya gönderme yapabilirsiniz
+            
             console.log("Gönderilen geri bildirim:", feedbackText);
         }
 
@@ -1887,7 +1887,7 @@
             x += dx;
             y += dy;
             
-            // Kenar kontrolü
+            
             if (x + 120 > window.innerWidth || x < 0) {
                 dx = -dx;
             }
@@ -1902,10 +1902,10 @@
             requestAnimationFrame(animate);
         }
         
-        // Animasyonu başlat
+        
         animate();
         
-        // Pencere boyutu değiştiğinde konumu ayarla
+        
         window.addEventListener('resize', function() {
             if (x + 120 > window.innerWidth) x = window.innerWidth - 120;
             if (y + 80 > window.innerHeight) y = window.innerHeight - 80;
