@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sağlıklı Beslenme Quiz</title>
+    <title>Siber Quiz</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,46 +12,56 @@
             margin: 0 auto;
             padding: 20px;
             line-height: 1.6;
+            background-color: rgb(138, 138, 138);
         }
+
         .question-card {
             margin-bottom: 20px;
             padding: 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            background-color: #f9f9f9;
+            background-color: #b6b6b6;
         }
+
         .question-text {
             font-weight: bold;
             margin-bottom: 10px;
         }
+
         .options {
             margin-left: 20px;
         }
+
         .option {
             margin: 8px 0;
             padding: 8px;
             cursor: pointer;
             border-radius: 4px;
         }
+
         .option:hover {
             background-color: #f0f0f0;
         }
+
         .option.selected {
             background-color: #d4edda;
             border: 1px solid #c3e6cb;
         }
+
         button {
             padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #4c9baf;
+            color: rgb(255, 255, 255);
             border: none;
             border-radius: 4px;
             cursor: pointer;
             margin: 10px 5px;
         }
+
         button:hover {
             background-color: #45a049;
         }
+
         #results {
             margin-top: 20px;
             padding: 15px;
@@ -58,30 +69,129 @@
             background-color: #f8f9fa;
             display: none;
         }
+
         .correct {
-            color: #28a745;
+            color: #1c6e2f;
         }
+
         .incorrect {
-            color: #dc3545;
+            color: #75161f;
         }
+
         #score {
             font-size: 1.2em;
             font-weight: bold;
             margin: 10px 0;
         }
+
+        #remaining-info {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #b4b4b4;
+            border-radius: 8px;
+        }
+
+        #uyarilar {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: large;
+
+        }
+
+        #soru_hakkinda {
+            color: lawngreen;
+        }
+
+        #feedback-container {
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        #feedback-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        #feedback-text {
+            width: 100%;
+            height: 100px;
+            margin: 0px 0;
+            padding: 0px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        #feedback-submit {
+            background-color: #17a2b8;
+        }
+
+        #feedback-submit:hover {
+            background-color: #138496;
+        }
+
+        #trash-can {
+            text-align: center;
+            font-size: 50px;
+            margin: 20px 0;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.5s ease-in-out;
+        }
+
+        #trash-can.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #feedback-thanks {
+            text-align: center;
+            color: #1a4123;
+            font-weight: bold;
+            margin: 10px 0;
+            display: none;
+        }
+        #dvd-animation {
+            position: fixed;
+            width: 120px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+        
+        #dvd-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
     </style>
 </head>
+
 <body>
-    <h1>Sağlıklı Beslenme Quiz</h1>
-    <button onclick="shuffleQuestions()">Soruları Karıştır</button>
+    <h1>TOPKAPININ AMK</h1>
+    <h1>Siber Quiz</h1>
+    <div id="remaining-info"></div>
+    <p id="uyarilar"> <b>Giderilen sorunlar; <br>
+            Tüm soruları görememe problemi giderildi. Her soruya kişilik atandı. <br>
+            Görülen soruları gösteren sayaç eklendi. <br>
+            Göz yoran background değiştirildi. Kör dostu dark theme uygulandı. Hayırlı olsun. (asude hariç)
+        </b></p>
+    <p id="soru_hakkinda">Tüm soruları çözmeden Sonuçları Göster butonuna tıklarsanız çalışmaz.</p>
+    <button onclick="shuffleQuestions()">Yeni 20 Soru Getir</button>
     <button onclick="showResults()">Sonuçları Göster</button>
-    <p>Tüm soruları çözmeden Sonuçları Göster butonuna tıklarsanız çalışmaz. Hepsini ç</p>
+
     <div id="score"></div>
     <div id="questions-container"></div>
     <div id="results"></div>
 
     <script>
-        const questions = [
+        // 120 soruluk veri seti (örnek olarak 6 soru gösteriliyor, gerçekte 120 soru olacak)
+        const allQuestions = [
             {
                 question: "ARP Poisoning saldırısının temel prensibi nedir?",
                 options: [
@@ -91,10 +201,11 @@
                     "DHCP server'ı çökertmek",
                     "Firewall kurallarını bypass etmek"
                 ],
-                correctAnswer: 1
+                correctAnswer: 1,
+                asked: false
             },
             {
-                question: "Man-in-the-Middle saldırısında saldırgan ne yapar?",
+                question: "2. Man-in-the-Middle saldırısında saldırgan ne yapar?",
                 options: [
                     "Ağ bağlantısını keser",
                     "İki taraf arasında gizlice iletişimi dinler/manipüle eder",
@@ -102,8 +213,8 @@
                     "Sistem dosyalarını değiştirir",
                     "Firewall'ı devre dışı bırakır"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "ARP protokolü hangi OSI katmanında çalışır?",
@@ -114,8 +225,8 @@
                     "Layer 4 (Transport)",
                     "Layer 7 (Application)"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "Ettercap aracının temel işlevi nedir?",
@@ -126,8 +237,8 @@
                     "Sistem yedekleme",
                     "Network monitoring"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "ARP Poisoning saldırısından korunmanın en etkili yolu nedir?",
@@ -138,8 +249,8 @@
                     "Regular backup",
                     "User training"
                 ],
-                correctAnswer: 0
-
+                correctAnswer: 0,
+                asked: false
             },
             {
                 question: "DoS (Denial of Service) saldırısının temel amacı nedir?",
@@ -150,8 +261,8 @@
                     "Şifre kırma",
                     "Dosya şifreleme"
                 ],
-                correctAnswer: 0
-
+                correctAnswer: 0,
+                asked: false
             },
             {
                 question: "LOIC (Low Orbit Ion Cannon) aracının temel çalışma prensibi nedir?",
@@ -162,8 +273,8 @@
                     "Ağ trafiği dinleme",
                     "Dosya şifreleme"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "SYN Flood saldırısı hangi protokol zafiyetini exploitler?",
@@ -174,8 +285,8 @@
                     "ICMP redirect",
                     "ARP resolution"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "Hping3 aracı ile SYN flood saldırısı gerçekleştirmek için hangi komut kullanılır?",
@@ -186,8 +297,8 @@
                     "hping3 -connect target_ip",
                     "hping3 -syn target_ip"
                 ],
-                correctAnswer: 0
-
+                correctAnswer: 0,
+                asked: false
             },
             {
                 question: "Volumetric DoS saldırısının hedefi nedir?",
@@ -198,7 +309,8 @@
                     "Disk alanını doldurmak",
                     "Veritabanı bağlantılarını tüketmek"
                 ],
-                correctAnswer: 2
+                correctAnswer: 2,
+                asked: false
             },
             {
                 question: "Windows sistemlerde SAM (Security Account Manager) dosyası nerede bulunur?",
@@ -209,7 +321,8 @@
                     "C:\\Temp",
                     "C:\\Windows\\Logs"
                 ],
-                correctAnswer: 1
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "Linux sistemlerde parola hash'leri hangi dosyada saklanır?",
@@ -220,8 +333,8 @@
                     "/var/log/auth.log",
                     "/home/users"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "Persistence (kalıcılık) sağlamak için hangi yöntem kullanılmaz?",
@@ -232,8 +345,8 @@
                     "Startup folder'a dosya koyma",
                     "Sistem saatini değiştirme"
                 ],
-                correctAnswer: 4
-
+                correctAnswer: 4,
+                asked: false
             },
             {
                 question: "Backdoor kurmanın temel amacı nedir?",
@@ -244,7 +357,8 @@
                     "Ağ hızını artırmak",
                     "Güvenlik güncellemesi yapmak"
                 ],
-                correctAnswer: 1
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "Exfiltration (veri çıkarma) işlemi sırasında dikkat edilmesi gereken en önemli faktör nedir?",
@@ -255,8 +369,8 @@
                     "İnternet bağlantısı",
                     "Disk alanı"
                 ],
-                correctAnswer: 2
-
+                correctAnswer: 2,
+                asked: false
             },
             {
                 question: "Aşağıdakilerden hangisi kablosuz ağlarda kaba kuvvet saldırılarına karşı alınabilecek bir önlem değildir?",
@@ -267,8 +381,8 @@
                     "SSID yayınını kapatmak",
                     "WEP şifreleme protokolünü tercih etmek"
                 ],
-                correctAnswer: 4
-
+                correctAnswer: 4,
+                asked: false
             },
             {
                 question: "Kablosuz ağ güvenlik protokollerinin doğru kronolojik sıralaması hangisidir?",
@@ -279,8 +393,8 @@
                     "WEP - WPA2 - WPA - WPA3",
                     "WPA - WPA2 - WEP - WPA3"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "Evil Twin saldırısı nedir?",
@@ -291,8 +405,8 @@
                     "İki farklı cihazın aynı MAC adresini kullanması",
                     "Bir kablosuz ağı karıştırmak için iki güçlü sinyal jeneratörü kullanılması"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "Kablosuz ağlarda Deauthentication Attack (Kimlik doğrulama engelleme saldırısı) için aşağıdakilerden hangisi doğrudur?",
@@ -303,8 +417,8 @@
                     "Erişim noktasından istemci cihazlara sahte kimlik doğrulama kaldırma (deauthentication) paketleri göndererek bağlantılarını koparan bir saldırı türüdür",
                     "Kullanıcıların kimlik bilgilerini ele geçirmek için RADIUS sunucularına yapılan bir saldırı türüdür"
                 ],
-                correctAnswer: 3
-
+                correctAnswer: 3,
+                asked: false
             },
             {
                 question: "Kablosuz ağlarda Packet Sniffing (Paket koklama) nedir?",
@@ -315,8 +429,8 @@
                     "Yalnızca bozuk paketlerin tespit edilmesi",
                     "Sadece belirli IP adreslerine giden paketlerin filtrelenmesi"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "Steganografi nedir?",
@@ -327,8 +441,8 @@
                     "Antivirüs tekniği",
                     "Intrusion detection sistemi"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
             {
                 question: "LSB (Least Significant Bit) steganografi yönteminde neye odaklanılır?",
@@ -339,8 +453,8 @@
                     "Dosya boyutuna",
                     "Metadata bilgilerine"
                 ],
-                correctAnswer: 2
-
+                correctAnswer: 2,
+                asked: false
             },
             {
                 question: "Salt değeri hash fonksiyonlarında neden kullanılır?",
@@ -351,10 +465,9 @@
                     "Şifreleme gücünü artırmak için",
                     "Bellek kullanımını azaltmak için"
                 ],
-                correctAnswer: 1
-
+                correctAnswer: 1,
+                asked: false
             },
-
             {
                 question: "Hybrid cryptosystem nedir?",
                 options: [
@@ -364,207 +477,1296 @@
                     "Sadece hash fonksiyonları",
                     "Sadece steganografi"
                 ],
+                correctAnswer: 2,
+                asked: false
+            },
+            {
+                question: "Perfect Forward Secrecy (PFS) özelliği neyi sağlar?",
+                options: [
+                    "Şifrelerin asla kırılmamasını",
+                    "Geçmiş oturumların uzun dönem anahtarlar ele geçirilse bile güvenli kalmasını",
+                    "Anahtar uzunluğunu artırmayı",
+                    "Otomatik anahtar güncellemesini",
+                    "Quantum dayanıklılığını"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "MITM saldırısının temel konsepti nedir?",
+                options: [
+                    "Sadece dinleme yapma",
+                    "İki taraf arasında gizlice konumlanma",
+                    "Sistemi çökertme",
+                    "Dosyaları şifreleme",
+                    "Hesapları kilitleme"
+                ],
+                correctAnswer: 1,
+                asked: false
+            },
+            {
+                question: "SSL Stripping saldırısının amacı nedir?",
+                options: [
+                    "SSL sertifikalarını silme",
+                    "HTTPS bağlantılarını HTTP’ye düşürme",
+                    "SSL anahtarlarını çalma",
+                    "SSL protokolünü güncelleme",
+                    "SSL hızını artırma"
+                ],
+                correctAnswer: 1,
+                asked: false
+            },
+            {
+                question: "DNS Spoofing saldırısında ne manipüle edilir?",
+                options: [
+                    "IP adresleri",
+                    "DNS yanıtları",
+                    "MAC adresleri",
+                    "Port numaraları",
+                    "Protokol başlıkları"
+                ],
+                correctAnswer: 1,
+                asked: false
+            },
+            {
+                question: "Session Hijacking saldırısında neyin ele geçirilmesi hedeflenir?",
+                options: [
+                    "Kullanıcı parolaları",
+                    "Oturum kimlik bilgileri (session tokens)",
+                    "Sistem dosyaları",
+                    "Ağ ayarları",
+                    "Güvenlik politikaları"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "MITM saldırılarından korunmanın en etkili yolu nedir?",
+                options: [
+                    "Güçlü parolalar",
+                    "End-to-end encryption ve certificate pinning",
+                    "Antivirüs yazılımı",
+                    "Firewall kuralları",
+                    "Regular backup"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "MAC Flooding saldırısının temel amacı nedir?",
+                options: [
+                    "Router tablosunu doldurmak",
+                    "Switch’in MAC adres tablosunu doldurmak",
+                    "ARP tablosunu temizlemek",
+                    "DNS cache’ini bozmak",
+                    "DHCP pool’unu tüketmek"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            }, {
+                question: "MAC Flooding saldırısı sonucunda switch hangi moda geçer?",
+                options: [
+                    "Routing mode",
+                    "Bridge mode",
+                    "Hub mode (fail-open)",
+                    "Security mode",
+                    "Monitor mode"
+                ],
                 correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "MAC Flooding saldırısında hangi bilgi manipüle edilir?",
+                options: [
+                    "IP adresleri",
+                    "Port numaraları",
+                    "MAC adresleri",
+                    "VLAN ID’leri",
+                    "Subnet mask’leri"
+                ],
+                correctAnswer: 2,
+                asked: false
+            },
+            {
+                question: "Hangi araç MAC Flooding saldırısı gerçekleştirmek için kullanılabilir?",
+                options: [
+                    "Nmap",
+                    "Macof",
+                    "Wireshark",
+                    "Netstat",
+                    "Ping"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "MAC Flooding saldırısından korunmanın en etkili yolu nedir?",
+                options: [
+                    "VLAN segmentasyonu",
+                    "Port security aktifleştirmek",
+                    "Güçlü parolalar kullanmak",
+                    "Firewall kuralları",
+                    "IDS/IPS sistemleri"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "WAF (Web Application Firewall) hangi saldırılara karşı koruma sağlar?",
+                options: [
+                    "Sadece DoS saldırıları",
+                    "SQL Injection, XSS, CSRF gibi web tabanlı saldırılar",
+                    "Sadece DDoS saldırıları",
+                    "Sadece malware",
+                    "Sadece ağ tabanlı saldırılar"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Input validation hangi saldırı türlerine karşı koruma sağlar?",
+                options: [
+                    "Sadece DoS saldırıları",
+                    "SQL Injection, XSS, Command Injection",
+                    "Sadece ağ saldırıları",
+                    "Sadece malware",
+                    "Sadece social engineering"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Honeypot sisteminin amacı nedir?",
+                options: [
+                    "Sistem performansını artırma",
+                    "Saldırıları çekme ve analiz etme",
+                    "Dosyaları yedekleme",
+                    "Ağ hızını artırma",
+                    "Kullanıcı authentication"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "DDoS scrubbing center nedir?",
+                options: [
+                    "Log temizleme merkezi",
+                    "Kötü amaçlı trafiği filtreleyerek temiz trafiği ileten merkez",
+                    "Virus temizlik merkezi",
+                    "Database optimizasyon merkezi",
+                    "Sistem güncelleme merkezi"
+                ],
+                correctAnswer: 1,
+                asked: false
+            }, {
+                question: "CAPTCHA sisteminin temel amacı nedir?",
+                options: [
+                    "Parolaları güçlendirme",
+                    "İnsan ve bot trafiğini ayırt etme",
+                    "Dosyaları şifreleme",
+                    "Ağ bağlantısını hızlandırma",
+                    "Session güvenliğini artırma"
+                ],
+                correctAnswer: 1,
+                asked: false
+            },
+            {
+                question: "IEEE 802.11 standardında tanımlanan Beacon Frame (İşaret Çerçevesi) hakkında aşağıdakilerden hangisi doğrudur?",
+                options: [
+                    "Sadece istemci cihazlar tarafından gönderilir",
+                    "Erişim noktasının özelliklerini ve varlığını duyurmak için periyodik olarak gönderilir",
+                    "Ağ trafiğini şifrelemek için kullanılır",
+                    "Kullanıcıları kimlik doğrulama işlemi için kullanılır",
+                    "Sadece ağ yöneticileri tarafından manuel olarak tetiklendiğinde gönderilir"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Kablosuz ağlarda Monitor Mode (İzleme Modu) ne işe yarar?",
+                options: [
+                    "Kablosuz ağ kartının sadece bağlı olduğu erişim noktasındaki trafiği izlemesini sağlar",
+                    "Kablosuz ağ kartının sadece kendisine gelen paketleri yakalamasını sağlar",
+                    "Kablosuz ağ kartının tüm kablosuz paketleri yakalamasını sağlar, kendisine yönelik olmasa bile",
+                    "Kablosuz ağ kartının yalnızca yönetim çerçevelerini (management frames) yakalamasını sağlar",
+                    "Kablosuz ağ kartının enerji tasarrufu yapmasını sağlar"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "Altyapı çalışma modeli (Infrastructure Mode) ile ilgili aşağıdakilerden hangisi yanlıştır?",
+                options: [
+                    "Tüm iletişim erişim noktası (access point) üzerinden gerçekleşir",
+                    "Cihazlar birbirleriyle doğrudan iletişim kurabilir, erişim noktasına gerek yoktur",
+                    "En yaygın kullanılan kablosuz ağ çalışma modelidir",
+                    "BSS (Basic Service Set) veya ESS (Extended Service Set) yapısında çalışır",
+                    "Cihazlar bir SSID’ye bağlanarak ağa dahil olurlar"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Kablosuz ağa bağlanma aşamaları sırasıyla nasıldır?",
+                options: [
+                    "Kimlik doğrulama, tarama, ilişkilendirme, veri transferi",
+                    "Tarama, kimlik doğrulama, ilişkilendirme, veri transferi",
+                    "İlişkilendirme, tarama, kimlik doğrulama, veri transferi",
+                    "Tarama, ilişkilendirme, veri transferi, kimlik doğrulama",
+                    "Veri transferi, tarama, kimlik doğrulama, ilişkilendirme"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Kablosuz ağ kartlarının çalışma modları arasında aşağıdakilerden hangisi yer almaz?",
+                options: [
+                    "Master Mode",
+                    "Managed Mode",
+                    "Monitor Mode",
+                    "Ad-Hoc Mode",
+                    "Terminal Mode"
+                ],
+                correctAnswer: 4
+                ,
+                asked: false
+            },
+            {
+                question: "MD5 hash fonksiyonunun çıktı boyutu kaçtır?",
+                options: [
+                    "128 bit",
+                    "160 bit",
+                    "256 bit",
+                    "512 bit",
+                    "64 bit"
+                ],
+                correctAnswer: 0
+                ,
+                asked: false
+            },
+            {
+                question: "RSA şifreleme yönteminde güvenlik neye dayanır?",
+                options: [
+                    "Büyük asal sayıların çarpım faktörlerini bulmanın zorluğu",
+                    "Hash fonksiyonlarının geri dönüşümsüzlüğü",
+                    "Simetrik anahtarların gizliliği",
+                    "Quantum hesaplamanın imkansızlığı",
+                    "Digital signature algoritmalarının karmaşıklığı"
+                ],
+                correctAnswer: 0
+                ,
+                asked: false
+            },
+            {
+                question: "Diffie-Hellman anahtar değişimin temel amacı nedir?",
+                options: [
+                    "Veriyi şifrelemek",
+                    "Digital signature oluşturmak",
+                    "Güvenli kanal üzerinden anahtar paylaşmak",
+                    "Hash değeri hesaplamak",
+                    "Sertifika doğrulamak"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            }, {
+                question: "SHA-256 hash fonksiyonunun çıktı boyutu kaçtır?",
+                options: [
+                    "128 bit",
+                    "160 bit",
+                    "256 bit",
+                    "512 bit",
+                    "1024 bit"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "Public Key Infrastructure (PKI) sisteminde sertifikaları kim imzalar?",
+                options: [
+                    "Son kullanıcı",
+                    "Certificate Authority (CA)",
+                    "Web sunucusu",
+                    "DNS sunucusu",
+                    "Proxy server"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Wireshark aracının temel işlevi nedir?",
+                options: [
+                    "Ağ trafiğini yakalamak ve analiz etmek",
+                    "Sistem güncellemelerini yapmak",
+                    "Dosyaları şifrelemek",
+                    "Parolaları hashlemek",
+                    "Sistem performansını ölçmek"
+                ],
+                correctAnswer: 0
+                ,
+                asked: false
+            },
+            {
+                question: "Topdump aracında hangi parametre belirli bir porta gelen trafiği filtrelemek için kullanılır?",
+                options: [
+                    "-i interface",
+                    "-n (no name resolution)",
+                    "-c count",
+                    "port [port_number]",
+                    "-w write"
+                ],
+                correctAnswer: 3
+                ,
+                asked: false
+            },
+            {
 
+                question: "Wireshark'ta display filter olarak hangi ifade HTTP trafiğini gösterir?",
+                options: [
+                    "tcp.port == 80",
+                    "http",
+                    "ip.proto == 6",
+                    "tcp && port 80",
+                    "http.request"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Hayatın sürmesi için hücre içinde oluşan tüm kimyasal değişmelere ne denir?",
+                question: "Promiscuous mode ne anlama gelir?",
                 options: [
-                    "Sındırim",
-                    "Emilim",
-                    "Besin öğesi",
-                    "Metabolizma"
+                    "Sadece kendi trafiğini dinlemek",
+                    "Tüm ağ trafiğini dinlemek",
+                    "Sadece hatalı paketleri yakalamak",
+                    "Sadece encrypted trafiği yakalamak",
+                    "Sadece broadcast paketlerini dinlemek"
                 ],
-                    correctAnswer: 3
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Aşağıdakilerden hangisi sağlıklı beslenme önerilerinden değildir?",
+                question: "Topdump ile yakalanan trafiği dosyaya kaydetmek için hangi parametre kullanılır?",
                 options: [
-                    "Taze sebze-meyve tüketimi artırılmalıdır",
-                    "Vücut ağırlığı önerilen düzeyde tutulmalıdır",
-                    "Günlük fiziksel aktivite düzeyi artırılmalıdır",
-                    "Her öğünde sevdiğimiz besinleri tüketmeliyiz"
+                    "-r filename",
+                    "-w filename",
+                    "-o filename",
+                    "-s filename",
+                    "-f filename"
                 ],
-                    correctAnswer: 3
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Hangisi karbonhidratların en basit hali olup daha küçük parçalara ayrılamaz?",
+                question: "Simetrik şifrelemenin temel özelliği nedir?",
                 options: [
-                    "Monosakkarit",
-                    "Polisakkarit",
-                    "Tetrasakkarit",
-                    "Disakkarit"
+                    "Şifreleme ve çözme için farklı anahtarlar kullanır",
+                    "Şifreleme ve çözme için aynı anahtar kullanır",
+                    "Anahtar gerektirmez",
+                    "Sadece hash fonksiyonu kullanır",
+                    "Sadece digital signature için kullanılır"
                 ],
-                    correctAnswer: 0
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Aşağıdakilerden hangisi suda eriyen vitaminlerdendir?",
+                question: "DES (Data Encryption Standard) kaç bitlik anahtar kullanır?",
                 options: [
-                    "A vitamini",
-                    "B vitamini",
-                    "D vitamini",
-                    "E vitamini"
+                    "128 bit",
+                    "256 bit",
+                    "56 bit",
+                    "64 bit",
+                    "32 bit"
                 ],
-                    correctAnswer: 1
+                correctAnswer: 2
+                ,
+                asked: false
             },
             {
-                question: "Kemiklerin büyümesini sağlayan vitamin hangisidir?",
+                question: "Simetrik şifrelemenin ana dezavantajı nedir?",
                 options: [
-                    "A vitamini",
-                    "B vitamini",
-                    "C vitamini",
-                    "D vitamini"
+                    "Yavaş çalışması",
+                    "Anahtar dağıtımı problemi",
+                    "Yüksek CPU kullanımı",
+                    "Sadece küçük dosyalarla çalışması",
+                    "Geri dönüşü olmayan şifreleme"
                 ],
-                    correctAnswer: 3
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Beynin tek enerji kaynağı olan glikoz hangi besin öğesinden alınır?",
+                question: "AES (Advanced Encryption Standard) hangi anahtar boyutlarını destekler?",
                 options: [
-                    "Protein",
-                    "Yağ",
-                    "Karbonhidrat",
-                    "Mineral"
+                    "Sadece 128 bit",
+                    "128, 192, 256 bit",
+                    "Sadece 256 bit",
+                    "64, 128 bit",
+                    "512, 1024 bit"
                 ],
-                    correctAnswer: 2
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Aşağıdaki besin ögelerinden hangisi enerji vermez?",
+                question: "Blowfish şifreleme algoritmasının maksimum anahtar boyutu kaçtır?",
                 options: [
-                    "Karbonhidratlar",
-                    "Proteinler",
-                    "Yağlar",
-                    "Vitaminler"
+                    "128 bit",
+                    "256 bit",
+                    "448 bit",
+                    "512 bit",
+                    "1024 bit"
                 ],
-                    correctAnswer: 3
+                correctAnswer: 2
+                ,
+                asked: false
             },
             {
-                question: "Aşağıdakilerden hangisi beslenmeye etki eden faktörlerden biri olarak kabul edilmez?",
+                question: "Windows Event Log'larını temizlemek için hangi komut kullanılır?",
                 options: [
-                    "Yaş",
-                    "Cinsiyet",
-                    "Yaşam tarzı",
-                    "Kan grubu"
+                    "del eventlog",
+                    "wevtutil cl",
+                    "clear-log",
+                    "remove-event",
+                    "clean-logs"
                 ],
-                    correctAnswer: 3
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Besin grupları hangi özelliklerine göre sınıflandırılır?",
+                question: "Sızma testi raporunda bulunması gereken temel bileşenler nelerdir?",
                 options: [
-                    "Üretildikleri bölgeye göre",
-                    "İçerdikleri benzer besin ögelerine göre",
-                    "Lezzetlerine göre",
-                    "Renklerine göre"
+                    "Sadece bulunan zafiyetler",
+                    "Sadece kullanılan araçlar",
+                    "Uygulama özeti, metodoloji, bulgular, öneriler",
+                    "Sadece risk değerlendirmesi",
+                    "Sadece teknik detaylar"
                 ],
-                    correctAnswer: 1
+                correctAnswer: 2
+                ,
+                asked: false
             },
             {
-                question: "Aşağıdakilerden hangisi osteoporoz riskini artıran bir faktördür?",
+                question: "CVSS (Common Vulnerability Scoring System) skorlaması neyi ölçer?",
                 options: [
-                    "Yetersiz kalsiyum alımı",
-                    "Düzenli fiziksel aktivite",
-                    "Yüksek protein alımı",
-                    "Yeterli vitamin D alımı"
+                    "Sistem performansını",
+                    "Zafiyet ciddiyetini",
+                    "Ağ hızını",
+                    "Kullanıcı memnuniyetini",
+                    "Maliyet analizi"
                 ],
-                    correctAnswer: 0
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Aşağıdakilerden hangisi proteinlerin temel yapı taşlarıdır?",
+                question: "Log analizi sırasında hangi bilgiler aranmalıdır?",
                 options: [
-                    "Karbonhidratlar",
-                    "Amino asitler",
-                    "Yağlar",
-                    "Vitaminler"
+                    "Başarısız giriş denemeleri",
+                    "Sistem değişiklikleri",
+                    "Unusual network activity",
+                    "Dosya erişimleri",
+                    "Hepsi"
                 ],
-                    correctAnswer: 1
+                correctAnswer: 4
+                ,
+                asked: false
             },
             {
-                question: "Aşağıdaki vitaminlerden hangisi kanın pıhtılaşmasını sağlar?",
+                question: "Remediation (düzeltme) önerilerinin öncelik sırası hangi kritere göre belirlenir?",
                 options: [
-                    "Vitamin A",
-                    "Vitamin D",
-                    "Vitamin E",
-                    "Vitamin K"
+                    "Düzeltme maliyeti",
+                    "Risk seviyesi ve iş kritikliği",
+                    "Teknik zorluk",
+                    "Zaman kısıtı",
+                    "Personel sayısı"
                 ],
-                    correctAnswer: 3
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Kalp-damar hastalıkları riskini azaltmak için önerilen bir besin grubu aşağıdakilerden hangisidir?",
+                question: "DDoS saldırısının DoS saldırısından temel farkı nedir?",
                 options: [
-                    "Şekerli gıdalar",
-                    "Trans yağlar",
-                    "Omega-3 yağ asitleri içeren balıklar",
-                    "Kırmızı et"
+                    "Daha güçlü araçlar kullanması",
+                    "Çoklu kaynaklardan eşzamanlı saldırı",
+                    "Farklı protokoller kullanması",
+                    "Daha uzun sürmesi",
+                    "Daha karmaşık teknikleri"
                 ],
-                    correctAnswer: 2
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Beslenme biliminin gelişiminde aşağıdaki bilim dallarından hangisinin rolü olmamıştır?",
+                question: "Botnet nedir?",
                 options: [
-                    "Fizyoloji",
-                    "Biyokimya",
-                    "Felsefe",
-                    "Veterinerlik"
+                    "Güvenlik yazılımı",
+                    "Kötü amaçlı yazılımla kontrol edilen bilgisayar ağı",
+                    "Ağ izleme aracı",
+                    "Firewall sistemi",
+                    "Antivirus programı"
                 ],
-                    correctAnswer: 2
+                correctAnswer: 1
+                ,
+                asked: false
+            }, {
+                question: "DDoS saldırılarından korunmak için hangi yöntem en etkilidir?",
+                options: [
+                    "Güçlü parolalar",
+                    "Düzenli yedek alma",
+                    "CDN ve DDoS mitigation servisleri",
+                    "Antivirüs yazılımı",
+                    "Sistem güncellemeleri"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+
+            {
+                question: "Reflection/Amplification DDoS saldırısının çalışma prensibi nedir?",
+                options: [
+                    "Hedefin kaynaklarını doğrudan tüketme",
+                    "Üçüncü taraf sunucuları kullanarak trafiği büyütme",
+                    "Ağ protokollerini bozma",
+                    "Sistem dosyalarını silme",
+                    "Kullanıcı hesaplarını kilitleme"
+                ],
+                correctAnswer: 1,
+                asked: false
+            }, {
+                question: "Rate limiting nedir?",
+                options: [
+                    "Dosya boyut sınırlaması",
+                    "Belirli bir kaynaktan gelen istek sayısını sınırlama",
+                    "Kullanıcı sayısını sınırlama",
+                    "Bant genişliği sınırlaması",
+                    "Zaman sınırlaması"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
             },
             {
-                question: "Anne sütü hangi dönemde sadece verilmelidir?",
+                question: "Brute force saldırısından korunmak için hangi yöntem en etkilidir?",
                 options: [
-                    "İlk 6 ay",
-                    "İlk 4 ay",
-                    "İlk 3 ay",
-                    "İlk 12 ay"
+                    "Parola karmaşıklığını artırmak",
+                    "Account lockout policy uygulamak",
+                    "Multi-factor authentication",
+                    "Parola geçmişi tutmak",
+                    "Hepsi"
                 ],
-                    correctAnswer: 0
+                correctAnswer: 4
+                ,
+                asked: false
             },
             {
-                question: "Büyümenin izlenmesinde kullanılan doğrudan metotlardan biri nedir?",
+                question: "Dictionary attack nedir?",
                 options: [
-                    "Tıbbi istatistikler",
-                    "Antropometrik ölçümler",
-                    "Besin tüketim araştırmaları",
-                    "Hayati istatistikler"
+                    "Kelime anlamlarını değiştirme",
+                    "Yaygın parola listelerini deneme",
+                    "Sözlük dosyalarını şifreleme",
+                    "Dil çevirisi yapma",
+                    "Kelime oyunları oynama"
                 ],
-                    correctAnswer: 1
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "OSINT (Open Source Intelligence) toplamanın temel amacı nedir?",
+                options: [
+                    "Açık kaynak yazılım geliştirmek",
+                    "Halka açık kaynaklardan bilgi toplamak",
+                    "Sosyal medya hesabı açmak",
+                    "Blog yazısı yazmak",
+                    "Online eğitim almak"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Rainbow table saldırısında ne kullanılır?",
+                options: [
+                    "Önceden hesaplanmış hash tabloları",
+                    "Renkli grafikler",
+                    "Hava durumu verileri",
+                    "Müzik dosyaları",
+                    "Resim albümleri"
+                ],
+                correctAnswer: 0,
+                asked: false
+            },
+            {
+                question: "Keylogger’ın temel işlevi nedir?",
+                options: [
+                    "Klavye temizleme",
+                    "Klavye tuşlarını kaydetme",
+                    "Klavye hızını ölçme",
+                    "Klavye ışığını ayarlama",
+                    "Klavye sesini açma"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "SQL Injection saldırısının temel prensibi nedir?",
+                options: [
+                    "Veritabanı şifrelerini kırma",
+                    "SQL sorgularına kötü amaçlı kod enjekte etme",
+                    "Veritabanı dosyalarını silme",
+                    "Ağ trafiğini dinleme",
+                    "Sistem loglarını temizleme"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Union-based SQL Injection saldırısında hangi SQL komutu kullanılır?",
+                options: [
+                    "SELECT",
+                    "INSERT",
+                    "UNION",
+                    "DELETE",
+                    "CREATE"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "Blind SQL Injection’da saldırgan nasıl bilgi elde eder?",
+                options: [
+                    "Doğrudan veritabanı çıktısından",
+                    "Hata mesajlarından",
+                    "Uygulamanın davranış farklılıklarından",
+                    "Log dosyalarından",
+                    "Sistem bilgilerinden"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+
+            {
+                question: "SQL Injection saldırılarından korunmanın en etkili yolu nedir?",
+                options: [
+                    "Güçlü parolalar",
+                    "Prepared statements/parameterized queries",
+                    "Firewall kullanımı",
+                    "Sistem güncellemeleri",
+                    "Antivirus yazılımı"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "SQLmap aracının temel işlevi nedir?",
+                options: [
+                    "Veritabanı yedekleme",
+                    "SQL Injection zafiyet tespiti ve sömürme",
+                    "Veritabanı performans analizi",
+                    "SQL sorgu optimizasyonu",
+                    "Veritabanı şifreleme"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "OWASP Top 10 listesinde sürekli olarak üst sıralarda yer alan web uygulama güvenlik zafiyeti hangisidir?",
+                options: [
+                    "Distributed Denial of Service (DDoS)",
+                    "Broken Access Control",
+                    "Man-in-the-Middle Attack",
+                    "ARP Spoofing",
+                    "MAC Flooding"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "URL yönlendirme zafiyeti (URL Redirection Vulnerability) için aşağıdaki açıklamalardan hangisi doğrudur?",
+                options: [
+                    "Web sunucusunun yanlış yapılandırılması nedeniyle ortaya çıkan bir zafiyettir",
+                    "Kullanıcının tarayıcısında JavaScript kodlarının çalıştırılmasına izin veren bir zafiyettir",
+                    "Kullanıcının, güvenilir bir web sitesi üzerinden zararlı bir web sitesine yönlendirilmesine neden olan bir zafiyettir",
+                    "Bir web uygulamasının veritabanından bilgi sızdırılmasına yol açan bir zafiyettir",
+                    "Kullanıcının kimlik bilgilerinin web tarayıcısında saklanmasına neden olan bir zafiyettir"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "HTML Injection zafiyeti ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+                options: [
+                    "Kullanıcı girdileri doğru şekilde filtrelenmediğinde ortaya çıkabilir",
+                    "Sitede görüntülenen içeriği değiştirmek için kullanılabilir",
+                    "Cross-Site Scripting (XSS) saldırılarının bir türüdür",
+                    "Yalnızca HTML etiketlerinin eklenmesine izin verir, JavaScript kodu çalıştırılamaz",
+                    "Sayfanın görünümünü ve içeriğini değiştirerek kullanıcıları kandırmak için kullanılabilir"
+                ],
+                correctAnswer: 3
+                ,
+                asked: false
+            },
+            {
+                question: "Web uygulamalarında SQL Injection saldırısına karşı en etkili koruma yöntemi hangisidir?",
+                options: [
+                    "Web Application Firewall (WAF) kullanmak",
+                    "HTTPS protokolünü kullanmak",
+                    "Parametreli sorgular (Prepared Statements) kullanmak",
+                    "Captcha doğrulaması eklemek",
+                    "Kullanıcı oturum süresini kısaltmak"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "Web uygulamalarında otomatize zafiyet tarama araçları ile ilgili aşağıdakilerden hangisi doğrudur?",
+                options: [
+                    "%100 doğrulukla tüm güvenlik açıklarını tespit edebilirler",
+                    "Yalnızca manuel olarak tespit edilebilen zafiyetleri bulabilirler",
+                    "Yalnızca OWASP Top 10 listesindeki zafiyetleri tarayabilirler",
+                    "Sadece web sunucusu seviyesindeki güvenlik açıklarını tespit edebilirler",
+                    "Birçok zafiyet türünü otomatik olarak tespit edebilirler, ancak manuel doğrulama gerektirebilir"
+                ],
+                correctAnswer: 4
+                ,
+                asked: false
+            },
+            {
+                question: "Kablosuz ağlarda veri iletimi hangi yöntemle sağlanır?",
+                options: [
+                    "Sadece fiber optik kablolar üzerinden",
+                    "Elektromanyetik dalgalar aracılığıyla",
+                    "Sadece bakır kablolar üzerinden",
+                    "Sadece koaksiyel kablolar üzerinden",
+                    "Sadece Ethernet kabloları üzerinden"
+                ],
+                correctAnswer: 1,
+                asked: false
+            },
+            {
+                question: "Aşağıdakilerden hangisi bir kablosuz ağ bağlantı çeşidi değildir?",
+                options: [
+                    "WLAN (Wireless Local Area Network)",
+                    "WPAN (Wireless Personal Area Network)",
+                    "WMAN (Wireless Metropolitan Area Network)",
+                    "WWAN (Wireless Wide Area Network)",
+                    "WCAN (Wireless Cable Area Network)"
+                ],
+                correctAnswer: 4
+                ,
+                asked: false
+            },
+            {
+                question: "IEEE 802.11 standardının en yaygın kullanılan versiyonu hangisidir?",
+                options: [
+                    "IEEE 802.11a",
+                    "IEEE 802.11b",
+                    "IEEE 802.11g",
+                    "IEEE 802.11n",
+                    "IEEE 802.11ac"
+                ],
+                correctAnswer: 4
+                ,
+                asked: false
+            },
+            {
+                question: "Kablosuz ağ güvenlik protokollerinden WPA2 hangi şifreleme algoritmasını kullanır?",
+                options: [
+                    "DES",
+                    "AES",
+                    "MD5",
+                    "RC4",
+                    "SHA-1"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Ad-Hoc çalışma modu için en doğru tanım hangisidir?",
+                options: [
+                    "Ağ cihazlarının bir erişim noktası üzerinden iletişim kurduğu mod",
+                    "Kablosuz cihazların erişim noktası olmadan doğrudan birbirleriyle iletişim kurduğu mod",
+                    "Kablosuz cihazların sadece kablolu ağlarla iletişim kurduğu mod",
+                    "Erişim noktasının sadece internet bağlantısı sağladığı mod",
+                    "Kablosuz ağın tamamen kapalı olduğu mod"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Windows sistemlerde UAC (User Access Control) bypass için hangi yöntem kullanılabilir?",
+                options: [
+                    "Registry değişiklikleri",
+                    "DLL hijacking",
+                    "Token impersonation",
+                    "Service exploitation",
+                    "Hepsi"
+                ],
+                correctAnswer: 4
+                ,
+                asked: false
+            },
+            {
+                question: "Windows Local Privilege Escalation için en yaygın kullanılan zafiyet türü hangisidir?",
+                options: [
+                    "Cross-site scripting",
+                    "Unquoted service path",
+                    "DNS spoofing",
+                    "ARP poisoning",
+                    "Session hijacking"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Windows Active Directory ortamında Kerberoasting saldırısının amacı nedir?",
+                options: [
+                    "Domain controller’ı çökertmek",
+                    "Servis hesaplarının hash’lerini elde etmek",
+                    "LDAP bağlantısını kesmek",
+                    "DNS cache’ini temizlemek",
+                    "Group Policy’leri değiştirmek"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Mimikatz aracının temel işlevi nedir?",
+                options: [
+                    "Port tarama",
+                    "Kimlik bilgilerini bellekten çıkarma",
+                    "Dosya şifreleme",
+                    "Ağ trafiği analizi",
+                    "Sistem güncellemesi"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            }, {
+                question: "Windows sistemlerde AlwaysInstallElevated zafiyeti ne anlama gelir?",
+                options: [
+                    "Sistem her zaman otomatik güncellenir",
+                    "MSI paketleri her zaman yüksek yetkilerle çalışır",
+                    "Sistem her zaman güvenli modda başlar",
+                    "Firewall her zaman aktiftir",
+                    "Antivirus her zaman çalışır"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Sızma testi sırasında erişim elde etmenin ilk aşaması hangisidir?",
+                options: [
+                    "Sistemde backdoor kurulumu",
+                    "Hedef sistemin keşfi ve zafiyet tespiti",
+                    "Yetki yükseltme işlemi",
+                    "Log dosyalarının silinmesi",
+                    "Lateral movement başlatma"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Buffer overflow saldırısının temel amacı nedir?",
+                options: [
+                    "Ağ trafiğini izlemek",
+                    "Dosya sistemini şifrelemek",
+                    "Sistem belleğinde kod çalıştırarak kontrol ele geçirmek",
+                    "Kullanıcı parolalarını çalmak",
+                    "Sistem loçlarını temizlemek"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "SQL Injection saldırısında hangi parametre kullanılarak veritabanına erişim sağlanır?",
+                options: [
+                    "HTTP başlıkları",
+                    "Kullanıcı giriş alanları",
+                    "SSL sertifikaları",
+                    "DNS kayıtları",
+                    "ARP tablosu"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Phishing saldırısının ana hedefi nedir?",
+                options: [
+                    "Sistem kaynaklarını tüketmek",
+                    "Kullanıcı kimlik bilgilerini çalmak",
+                    "Ağ bağlantısını kesmek",
+                    "Dosyaları şifrelemek",
+                    "Sistem performansını düşürmek"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Reverse shell nedir?",
+                options: [
+                    "Hedef sistemin güvenlik duvarını devre dışı bırakma",
+                    "Uzak sistemden saldırganın makinesine bağlantı kurma",
+                    "Dosya sistemini tersine çevirme",
+                    "Şifreli bağlantıyı çözme",
+                    "Sistem saatini geri alma"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Kablosuz ağlarda keşif yapma yöntemlerinden hangisi pasif keşif olarak değerlendirilir?",
+                options: [
+                    "Probe Request paketleri göndermek",
+                    "Deauthentication paketleri göndermek",
+                    "Beacon Frame'leri dinlemek",
+                    "ARP paketleri göndermek",
+                    "Ping taraması yapmak"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "Kablosuz Ağ Saldırı Tespit Sistemleri (WIDS) hakkında aşağıdakilerden hangisi yanlıştır?",
+                options: [
+                    "Yetkisiz erişim noktalarını tespit edebilir",
+                    "MAC spoofing saldırılarını tespit edebilir",
+                    "Deauthentication saldırılarını tespit edebilir",
+                    "Tüm saldırı türlerini %100 doğrulukla tespit edebilir",
+                    "Ağ trafiğini analiz ederek anormal davranışları belirleyebilir"
+                ],
+                correctAnswer: 3,
+                asked: false
+            },
+
+
+            {
+                question: "Aşağıdakilerden hangisi kablosuz ağlarda rogue (sahte) erişim noktalarının tespiti için kullanılan bir yöntem değildir?",
+                options: [
+                    "RF fingerprinting analizi",
+                    "Zaman tabanlı analiz",
+                    "Trafik analizi",
+                    "IP adresi bloklama",
+                    "MAC adresi karşılaştırması"
+                ],
+                correctAnswer: 3
+                ,
+                asked: false
+            }, {
+                question: "Kablosuz ağlarda aktif ve pasif parmak izi toplama (fingerprinting) yöntemleri arasındaki fark nedir?",
+                options: [
+                    "Aktif yöntemler daha hızlıdır, pasif yöntemler daha yavaştır",
+                    "Aktif yöntemler sadece yöneticiler tarafından kullanılabilir, pasif yöntemler herkes tarafından kullanılabilir",
+                    "Aktif yöntemler ağa paket göndererek bilgi toplar, pasif yöntemler sadece dinleme yaparak bilgi toplar",
+                    "Aktif yöntemler sadece erişim noktalarını tespit eder, pasif yöntemler tüm cihazları tespit eder",
+                    "Aktif yöntemler WPA/WPA2 ağlarında, pasif yöntemler sadece WEP ağlarında çalışır"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "Kablosuz ağ saldırı tespit sistemlerinde Anomali Tabanlı Tespit yöntemi neye dayanır?",
+                options: [
+                    "Bilinen saldırı imzalarının veritabanına",
+                    "Normal ağ trafiği modelinden sapmaların tespitine",
+                    "Güvenlik duvarı kurallarına",
+                    "Sadece kullanıcı davranışlarının izlenmesine",
+                    "Yalnızca protokol analizine"
+                ],
+                correctAnswer: 1,
+                asked: false
+            },
+            {
+                question: "Web Uygulama Güvenlik Duvarı (WAF) ile ilgili aşağıdakilerden hangisi yanlıştır?",
+                options: [
+                    "HTTP trafiğini izler ve analiz eder",
+                    "SQL Injection ve XSS gibi saldırıları engelleyebilir",
+                    "Doğrudan veritabanı güvenliğini sağlar ve veritabanı üzerindeki tüm saldırıları engeller",
+                    "İmza tabanlı ve davranışsal analiz yöntemlerini kullanabilir",
+                    "Hem donanım hem de yazılım tabanlı çözümleri mevcuttur"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "Web servislerinin keşfedilmesi için kullanılan yöntemlerden hangisi değildir?",
+                options: [
+                    "WSDL dosyalarının incelenmesi",
+                    "DNS zone transfer saldırıları",
+                    "Dizin tarama araçları kullanma",
+                    "API dokümantasyonlarını inceleme",
+                    "TCP/IP paket analizi yapma"
+                ],
+                correctAnswer: 4
+                ,
+                asked: false
+            },
+            {
+                question: "Web uygulama güvenlik duvarlarını (WAF) atlatma teknikleri arasında hangisi yer almaz?",
+                options: [
+                    "HTTP parametre kirliliği (HTTP Parameter Pollution)",
+                    "Kodlama varyasyonları (Encoding Variations)",
+                    "SSL/TLS kullanımı",
+                    "Bölünmüş saldırılar (Fragmented Attacks)",
+                    "HTTP Yöntem değiştirme (HTTP Method Tampering)"
+                ],
+                correctAnswer: 2
+                ,
+                asked: false
+            },
+            {
+                question: "Web servislerine yönelik zafiyetlerden XML External Entity (XXE) saldırısı neyi hedefler?",
+                options: [
+                    "Servis kodlarının çalınmasını",
+                    "Sunucu dosya sistemine erişimi",
+                    "Sadece veritabanı bağlantılarını kesmeyi",
+                    "Sadece hizmet reddi (DoS) saldırısı gerçekleştirmeyi",
+                    "Sadece oturum bilgilerini çalmayı"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Web servislerinde REST API güvenliği için aşağıdakilerden hangisi en az önemlidir?",
+                options: [
+                    "API anahtarları ve token tabanlı kimlik doğrulama",
+                    "HTTPS protokolü kullanımı",
+                    "İstek sınırlama (Rate Limiting)",
+                    "CORS (Cross-Origin Resource Sharing) yapılandırması",
+                    "API endpoint'lerin gizli ve tahmin edilemez URL'lere sahip olması"
+                ],
+                correctAnswer: 4
+                ,
+                asked: false
+            },
+            {
+                question: "Lateral movement'un temel amacı nedir?",
+                options: [
+                    "Sistem performansını artırmak",
+                    "Ağ içinde başka sistemlere erişim sağlamak",
+                    "Dosyaları yedeklemek",
+                    "Güvenlik güncellemelerini yapmak",
+                    "Ağ bant genişliğini artırmak"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            }, {
+                question: "Pass-the-Hash saldırısında ne kullanılır?",
+                options: [
+                    "Şifreli parolalar",
+                    "Hash değerleri",
+                    "SSL sertifikaları",
+                    "MAC adresleri",
+                    "IP adresleri"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "SMB protokolü üzerinden yapılan lateral movement için hangi araç yaygın kullanılır?",
+                options: [
+                    "Nmap",
+                    "PsExec",
+                    "Wireshark",
+                    "Burp Suite",
+                    "Metasploit Framework"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+
+            {
+                question: "Windows ortamında WMI (Windows Management Instrumentation) lateral movement için nasıl kullanılır?",
+                options: [
+                    "Dosya transferi için",
+                    "Uzak komut çalıştırma için",
+                    "Ağ dinleme için",
+                    "Şifre çözme için",
+                    "Sistem tarama için"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Golden Ticket saldırısı hangi protokolü hedefler?",
+                options: [
+                    "HTTP",
+                    "FTP",
+                    "Kerberos",
+                    "SSH",
+                    "SMTP"
+                ],
+                correctAnswer: 2,
+                asked: false
+            }, {
+                question: "HULK (HTTP Unbearable Load King) aracının çalışma prensibi nedir?",
+                options: [
+                    "Database kaynaklarını tüketme",
+                    "Benzersiz HTTP istekleri oluşturarak cache bypass",
+                    "Ağ bağlantılarını kesme",
+                    "Sistem belleğini doldurma",
+                    "CPU döngülerini tüketme"
+                ],
+                correctAnswer: 1,
+                asked: false
+            },
+            {
+                question: "OWASP SwitchBlade aracının temel amacı nedir?",
+                options: [
+                    "Güvenlik zafiyet taraması",
+                    "Switch ağlarında DoS saldırısı",
+                    "Web uygulaması testing",
+                    "Sızma testi otomasyonu",
+                    "Kod analizi"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Time-based Blind SQL Injection'da hangi teknik kullanılır?",
+                options: [
+                    "Error messages analizi",
+                    "Database response delay",
+                    "Direct output reading",
+                    "HTTP status codes",
+                    "Cookie manipulation"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "CSRF (Cross-Site Request Forgery) saldırısının hedefi nedir?",
+                options: [
+                    "Kullanıcı parolasını çalma",
+                    "Kullanıcı adına isteksiz işlemler yaptırma",
+                    "Web sitesini çökertme",
+                    "Database'e erişim sağlama",
+                    "Session token'ları çalma"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
+            },
+            {
+                question: "Slowloris saldırısının çalışma prensibi nedir?",
+                options: [
+                    "Büyük dosyalar upload etme",
+                    "Yarım HTTP bağlantılarını uzun süre açık tutma",
+                    "SQL injection gerçekleştirme",
+                    "Cross-site scripting",
+                    "Buffer overflow"
+                ],
+                correctAnswer: 1
+                ,
+                asked: false
             }
+
         ];
-        
 
         let currentQuestions = [];
         let userAnswers = {};
+        let askedQuestions = 0;
+        const QUESTIONS_PER_ROUND = 20;
 
-        // print
+        // Soruları karıştır ve yeni 20 soru getir
         function shuffleQuestions() {
+            // Eğer 120 soru sorulduysa uyarı ver
+            if (askedQuestions >= allQuestions.length) {
+                alert("Tüm sorular gösterildi! Başka soru kalmadı.");
+                return;
+            }
+
             const container = document.getElementById("questions-container");
             container.innerHTML = "";
             userAnswers = {};
             document.getElementById("results").style.display = "none";
             document.getElementById("score").innerHTML = "";
 
-            // random
-            currentQuestions = [...questions].sort(() => Math.random() - 0.5);
+            // Daha önce sorulmamış soruları filtrele
+            const availableQuestions = allQuestions.filter(q => !q.asked);
 
+            // Rastgele 20 soru seç (veya kalan soruların hepsini)
+            const questionsToAsk = Math.min(QUESTIONS_PER_ROUND, availableQuestions.length);
+            currentQuestions = [...availableQuestions]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, questionsToAsk);
+
+            // Seçilen soruları "soruldu" olarak işaretle
+            currentQuestions.forEach(q => q.asked = true);
+            askedQuestions += currentQuestions.length;
+
+            // Soruları ekrana yaz
             currentQuestions.forEach((q, index) => {
                 const questionCard = document.createElement("div");
                 questionCard.className = "question-card";
                 questionCard.dataset.index = index;
 
-                // option random
+                // Seçenekleri karıştır
                 const shuffledOptions = [...q.options];
                 const correctAnswerText = shuffledOptions[q.correctAnswer];
-                
-                //for (let i = shuffledOptions.length - 1; i > 0; i--) {
-                 //   const j = Math.floor(Math.random() * (i + 1));
-                 //   [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
-                //}
 
+                for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+                }
 
                 const newCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
                 currentQuestions[index].shuffledCorrectAnswer = newCorrectIndex;
 
-
                 questionCard.innerHTML = `
-                    <div class="question-text">${index + 1}. ${q.question}</div>
+                    <div class="question-text">${q.question}</div>
                     <div class="options">
                         ${shuffledOptions.map((opt, i) => `
                             <div class="option" data-option="${i}" onclick="selectOption(${index}, ${i})">
@@ -576,8 +1778,21 @@
 
                 container.appendChild(questionCard);
             });
+
+            // Kalan soru bilgisini güncelle
+            updateRemainingInfo();
         }
 
+        function updateRemainingInfo() {
+            const remaining = allQuestions.length - askedQuestions;
+            const infoElement = document.getElementById("remaining-info");
+            infoElement.innerHTML = `
+                <strong>Toplam Soru:</strong> ${allQuestions.length} | 
+                <strong>Gösterilen:</strong> ${askedQuestions} | 
+                <strong>Kalan:</strong> ${remaining}
+                ${remaining === 0 ? '<p>Tüm sorular gösterildi!</p>' : ''}
+            `;
+        }
 
         function selectOption(questionIndex, optionIndex) {
             const questionCard = document.querySelector(`.question-card[data-index="${questionIndex}"]`);
@@ -588,7 +1803,7 @@
             userAnswers[questionIndex] = optionIndex;
         }
 
-        // result
+        // Sonuçları göster
         function showResults() {
             if (Object.keys(userAnswers).length < currentQuestions.length) {
                 alert("Lütfen tüm soruları cevaplayın!");
@@ -601,12 +1816,12 @@
             currentQuestions.forEach((q, index) => {
                 const userAnswer = userAnswers[index];
                 const isCorrect = userAnswer === q.shuffledCorrectAnswer;
-                
+
                 if (isCorrect) correctCount++;
 
                 resultsHTML += `
                     <div class="question-card ${isCorrect ? 'correct' : 'incorrect'}">
-                        <div class="question-text">${index + 1}. ${q.question}</div>
+                        <div class="question-text">${q.question}</div>
                         <div><strong>Senin Cevabın:</strong> ${String.fromCharCode(65 + userAnswer)}) ${q.options[userAnswer]}</div>
                         <div><strong>Doğru Cevap:</strong> ${String.fromCharCode(65 + q.shuffledCorrectAnswer)}) ${q.options[q.shuffledCorrectAnswer]}</div>
                     </div>
@@ -620,9 +1835,101 @@
             document.getElementById("results").style.display = "block";
         }
 
-        // refresh random
-        window.onload = shuffleQuestions;
+        // Sayfa yüklendiğinde ilk 20 soruyu yükle
+        window.onload = function () {
+            updateRemainingInfo();
+            shuffleQuestions();
+        };
+
+
+
+        function submitFeedback() {
+            const feedbackText = document.getElementById("feedback-text").value;
+            const trashCan = document.getElementById("trash-can");
+            const thanksMessage = document.getElementById("feedback-thanks");
+
+            if (!feedbackText.trim()) {
+                alert("Lütfen bir mesaj yazın!");
+                return;
+            }
+
+            // Animasyonu başlat
+            trashCan.classList.add("visible");
+
+            // 1.5 saniye sonra teşekkür mesajını göster
+            setTimeout(() => {
+                thanksMessage.style.display = "block";
+
+                // Formu temizle
+                document.getElementById("feedback-text").value = "";
+
+                // 3 saniye sonra animasyonu sıfırla
+                setTimeout(() => {
+                    trashCan.classList.remove("visible");
+                    thanksMessage.style.display = "none";
+                }, 3000);
+            }, 1500);
+
+            // Burada gerçekte bir sunucuya gönderme yapabilirsiniz
+            console.log("Gönderilen geri bildirim:", feedbackText);
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const dvd = document.getElementById('dvd-animation');
+        let x = Math.random() * (window.innerWidth - 120);
+        let y = Math.random() * (window.innerHeight - 80);
+        let dx = 0.6;
+        let dy = 0.6;
+
+        function animate() {
+            x += dx;
+            y += dy;
+            
+            // Kenar kontrolü
+            if (x + 120 > window.innerWidth || x < 0) {
+                dx = -dx;
+            }
+            
+            if (y + 80 > window.innerHeight || y < 0) {
+                dy = -dy;
+            }
+            
+            dvd.style.left = x + 'px';
+            dvd.style.top = y + 'px';
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Animasyonu başlat
+        animate();
+        
+        // Pencere boyutu değiştiğinde konumu ayarla
+        window.addEventListener('resize', function() {
+            if (x + 120 > window.innerWidth) x = window.innerWidth - 120;
+            if (y + 80 > window.innerHeight) y = window.innerHeight - 80;
+        });
+    });
     </script>
+
     <button onclick="showResults()">Sonuçları Göster</button>
+
+    <div id="feedback-container">
+        <h2>Şikayetleriniz</h2>
+        <form id="feedback-form">
+            <textarea id="feedback-text" placeholder="Lütfen öneri veya şikayetlerinizi buraya yazın..."></textarea>
+            <button type="button" id="feedback-submit" onclick="submitFeedback()">Gönder</button>
+        </form>
+        <div id="trash-can">🗑️</div>
+        <div id="feedback-thanks">Teşekkür ederiz! Geri bildiriminiz çöp kutusuna başarıyla atıldı! 😊</div>
+    </div>
+
+    <div id="dvd-animation">
+        <img id="dvd-logo" src="Ekran görüntüsü 2025-06-14 002754.png" alt="DVD Logo">
+    </div>
+
+    <img src="Ekran görüntüsü 2025-06-11 222755.png" alt="sonundabitti.">
 </body>
+
 </html>
