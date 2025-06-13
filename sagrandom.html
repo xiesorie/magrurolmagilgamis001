@@ -83,245 +83,289 @@
     <script>
         const questions = [
             {
-                question: "Aşağıdakilerden hangisi toplumda beslenme sorununu oluşmasının temel nedenlerinden değildir?",
+                question: "ARP Poisoning saldırısının temel prensibi nedir?",
                 options: [
-                    "Besin dağıtımı ve teknolojisindeki yetersizlik ve düzensizlikler, ",
-                    "Ailenin besin satın alma gücünün artması ",
-                    "Eğitim ve bilinç düzey yetersizlği",
-                    "Sosyo-kültürel etmenler"
+                    "DNS kayıtlarını değiştirmek",
+                    "ARP tablosunda sahte kayıtlar oluşturmak",
+                    "Routing tablosunu bozmak",
+                    "DHCP server'ı çökertmek",
+                    "Firewall kurallarını bypass etmek"
                 ],
-                correctAnswer: 1  // d cvp 0
+                correctAnswer: 1
             },
             {
-                question: "Yetersiz beslenmeden en çok etkilenen gruplar kimlerdir?",
+                question: "Man-in-the-Middle saldırısında saldırgan ne yapar?",
                 options: [
-                    "Emzikli kadınlar ",
-                    "Çalışanlar ",
-                    "Sporcular ",
-                    "Ev hanımları "
+                    "Ağ bağlantısını keser",
+                    "İki taraf arasında gizlice iletişimi dinler/manipüle eder",
+                    "Sadece şifreleri kırır",
+                    "Sistem dosyalarını değiştirir",
+                    "Firewall'ı devre dışı bırakır"
+                ],
+                correctAnswer: 1
+
+            },
+            {
+                question: "ARP protokolü hangi OSI katmanında çalışır?",
+                options: [
+                    "Layer 1 (Physical)",
+                    "Layer 2 (Data Link)",
+                    "Layer 3 (Network)",
+                    "Layer 4 (Transport)",
+                    "Layer 7 (Application)"
+                ],
+                correctAnswer: 1
+
+            },
+            {
+                question: "Ettercap aracının temel işlevi nedir?",
+                options: [
+                    "Port tarama",
+                    "ARP Poisoning ve MITM saldırıları",
+                    "Dosya şifreleme",
+                    "Sistem yedekleme",
+                    "Network monitoring"
+                ],
+                correctAnswer: 1
+
+            },
+            {
+                question: "ARP Poisoning saldırısından korunmanın en etkili yolu nedir?",
+                options: [
+                    "Dynamic ARP Inspection (DAI)",
+                    "Güçlü parollar",
+                    "Antivirus kullanmak",
+                    "Regular backup",
+                    "User training"
                 ],
                 correctAnswer: 0
+
             },
             {
-                question: "Çocuklarda büyümenn zlenmesnde aşağıdaklerden hangs değerlendrlmez.?",
+                question: "DoS (Denial of Service) saldırısının temel amacı nedir?",
                 options: [
-                    "Yaşa göre boy uzunluğu ",
-                    "Yaşa göre vücut ağırlığı ",
-                    "Yaşa göre ayak büyüklüğü ",
-                    "Boy uzunluğuna göre vücut ağırlığı"
+                    "Hizmetin kullanım dışı bırakılması",
+                    "Veri çalma",
+                    "Sistem yöneticisi olma",
+                    "Şifre kırma",
+                    "Dosya şifreleme"
+                ],
+                correctAnswer: 0
+
+            },
+            {
+                question: "LOIC (Low Orbit Ion Cannon) aracının temel çalışma prensibi nedir?",
+                options: [
+                    "SQL injection gerçekleştirme",
+                    "Hedef sunucuya yoğun HTTP/TCP istekleri gönderme",
+                    "Şifre kırma",
+                    "Ağ trafiği dinleme",
+                    "Dosya şifreleme"
+                ],
+                correctAnswer: 1
+
+            },
+            {
+                question: "SYN Flood saldırısı hangi protokol zafiyetini exploitler?",
+                options: [
+                    "HTTP keep-alive",
+                    "TCP three-way handshake",
+                    "UDP connectionless yapısı",
+                    "ICMP redirect",
+                    "ARP resolution"
+                ],
+                correctAnswer: 1
+
+            },
+            {
+                question: "Hping3 aracı ile SYN flood saldırısı gerçekleştirmek için hangi komut kullanılır?",
+                options: [
+                    "hping3 -S –flood target_ip",
+                    "hping3 -ddos target_ip",
+                    "hping3 -tcp target_ip",
+                    "hping3 -connect target_ip",
+                    "hping3 -syn target_ip"
+                ],
+                correctAnswer: 0
+
+            },
+            {
+                question: "Volumetric DoS saldırısının hedefi nedir?",
+                options: [
+                    "CPU kaynaklarını tüketmek",
+                    "Bellek kaynaklarını tüketmek",
+                    "Bant genişliğini tüketmek",
+                    "Disk alanını doldurmak",
+                    "Veritabanı bağlantılarını tüketmek"
                 ],
                 correctAnswer: 2
             },
             {
-                question: "Çocuklarda beslenme yeterli olmazsa aşağıdakilerden hangisi gelişebilir?",
+                question: "Windows sistemlerde SAM (Security Account Manager) dosyası nerede bulunur?",
                 options: [
-                    "Yaşıtlarından geç konuşur",
-                    "Yaşıtlarına göre erken oturur",
-                    "Yaşıtlarına göre daha hareketlidir",
-                    "Yaşıtlarına göre daha kısadır"
+                    "C:\\Users",
+                    "C:\\Windows\\System32\\config",
+                    "C:\\Program Files",
+                    "C:\\Temp",
+                    "C:\\Windows\\Logs"
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Linux sistemlerde parola hash'leri hangi dosyada saklanır?",
+                options: [
+                    "/etc/passwd",
+                    "/etc/shadow",
+                    "/etc/group",
+                    "/var/log/auth.log",
+                    "/home/users"
+                ],
+                correctAnswer: 1
+
+            },
+            {
+                question: "Persistence (kalıcılık) sağlamak için hangi yöntem kullanılmaz?",
+                options: [
+                    "Registry değişiklikleri",
+                    "Scheduled task oluşturma",
+                    "Service kurulumu",
+                    "Startup folder'a dosya koyma",
+                    "Sistem saatini değiştirme"
+                ],
+                correctAnswer: 4
+
+            },
+            {
+                question: "Backdoor kurmanın temel amacı nedir?",
+                options: [
+                    "Sistem performansını artırmak",
+                    "Gelecekte erişim için gizli kapı bırakmak",
+                    "Dosyaları yedeklemek",
+                    "Ağ hızını artırmak",
+                    "Güvenlik güncellemesi yapmak"
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Exfiltration (veri çıkarma) işlemi sırasında dikkat edilmesi gereken en önemli faktör nedir?",
+                options: [
+                    "Transfer hızı",
+                    "Dosya boyutu",
+                    "Gizlilik ve tespit edilmeme",
+                    "İnternet bağlantısı",
+                    "Disk alanı"
+                ],
+                correctAnswer: 2
+
+            },
+            {
+                question: "Aşağıdakilerden hangisi kablosuz ağlarda kaba kuvvet saldırılarına karşı alınabilecek bir önlem değildir?",
+                options: [
+                    "Karmaşık ve uzun parola kullanmak",
+                    "Başarısız oturum açma denemelerinde zaman aşımı uygulamak",
+                    "MAC adres filtrelemesi yapmak",
+                    "SSID yayınını kapatmak",
+                    "WEP şifreleme protokolünü tercih etmek"
+                ],
+                correctAnswer: 4
+
+            },
+            {
+                question: "Kablosuz ağ güvenlik protokollerinin doğru kronolojik sıralaması hangisidir?",
+                options: [
+                    "WPA2 - WPA3 - WEP - WPA",
+                    "WEP - WPA - WPA2 - WPA3",
+                    "WPA - WEP - WPA2 - WPA3",
+                    "WEP - WPA2 - WPA - WPA3",
+                    "WPA - WPA2 - WEP - WPA3"
+                ],
+                correctAnswer: 1
+
+            },
+            {
+                question: "Evil Twin saldırısı nedir?",
+                options: [
+                    "İki kablosuz ağın frekans çakışması yaşaması",
+                    "Saldırganın, meşru bir ağın aynısını taklit eden sahte bir erişim noktası oluşturması",
+                    "Ağ trafiğinin iki farklı yönlendiriciye bölünmesi",
+                    "İki farklı cihazın aynı MAC adresini kullanması",
+                    "Bir kablosuz ağı karıştırmak için iki güçlü sinyal jeneratörü kullanılması"
+                ],
+                correctAnswer: 1
+
+            },
+            {
+                question: "Kablosuz ağlarda Deauthentication Attack (Kimlik doğrulama engelleme saldırısı) için aşağıdakilerden hangisi doğrudur?",
+                options: [
+                    "Kullanıcıların ağa bağlanmasını engellemek için DNS sunucularına yapılan saldırı türüdür",
+                    "Ağ cihazları arasındaki TCP bağlantılarını koparmak için kullanılan bir saldırı türüdür",
+                    "Kimlik doğrulama sunucusunun çalışmasını engelleyen bir DoS saldırısıdır",
+                    "Erişim noktasından istemci cihazlara sahte kimlik doğrulama kaldırma (deauthentication) paketleri göndererek bağlantılarını koparan bir saldırı türüdür",
+                    "Kullanıcıların kimlik bilgilerini ele geçirmek için RADIUS sunucularına yapılan bir saldırı türüdür"
                 ],
                 correctAnswer: 3
+
             },
             {
-                question: "Bir ya da daha fazla elzem besin ögesinin yetersiz veya aşırı alımı ile sonuçlanan patolojik durum aşağıdakilerden hangisidir?",
+                question: "Kablosuz ağlarda Packet Sniffing (Paket koklama) nedir?",
                 options: [
-                    "Malnitrisyon",
-                    "Obsturiksiyon",
-                    "Anoreksiya",
-                    "Malabsorbsiyon"
+                    "Ağ üzerindeki paketlerin boyutlarının analiz edilmesi",
+                    "Ağ üzerindeki veri trafiğinin izlenmesi ve kaydedilmesi",
+                    "Paketlerin iletim hızının ölçülmesi",
+                    "Yalnızca bozuk paketlerin tespit edilmesi",
+                    "Sadece belirli IP adreslerine giden paketlerin filtrelenmesi"
                 ],
-                    correctAnswer: 0
+                correctAnswer: 1
+
             },
             {
-                question: "Aşağıdakilerden hangisi yetersiz ve dengesiz beslenme sonucu gelişen hastalıklardan değildir?",
+                question: "Steganografi nedir?",
                 options: [
-                    "Diyabet hastalığı",
-                    "Hepatit",
-                    "Anemi",
-                    "Kanser"
+                    "Şifreleme algoritması",
+                    "Gizli mesajları başka medya içinde saklama sanatı",
+                    "Ağ protokolü",
+                    "Antivirüs tekniği",
+                    "Intrusion detection sistemi"
                 ],
-                    correctAnswer: 1
+                correctAnswer: 1
+
             },
             {
-                question: "Protein alımındaki yetersizliğe göre enerji alımındaki yetersizlik ön planda olduğu hastalık aşağıdakilerden hangisidir?",
+                question: "LSB (Least Significant Bit) steganografi yönteminde neye odaklanılır?",
                 options: [
-                    "Kuvashiorkor",
-                    "Diyabet",
-                    "Marasmik kuvashiorkor",
-                    "Marasmus"
+                    "Dosya başlığına",
+                    "En önemli bitlere",
+                    "En önemsiz bitlere",
+                    "Dosya boyutuna",
+                    "Metadata bilgilerine"
                 ],
-                    correctAnswer: 3
+                correctAnswer: 2
+
             },
             {
-                question: "Anne sütü ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?",
+                question: "Salt değeri hash fonksiyonlarında neden kullanılır?",
                 options: [
-                    "İlk 6 ayda bebeğin ihtiyacının %100’ünü karşılar",
-                    "6-12 ayda bebeğin ihtiyacının %75’ini karşılar",
-                    "6-12 ayda bebeğin ihtiyacının %50’sini karşılar",
-                    "12. aydan sonra da %30’unu karşılar"
+                    "Hash’i hızlandırmak için",
+                    "Rainbow table saldırılarından korunmak için",
+                    "Dosya boyutunu küçültmek için",
+                    "Şifreleme gücünü artırmak için",
+                    "Bellek kullanımını azaltmak için"
                 ],
-                    correctAnswer: 1
-            },
-            {
-                question: "Besinlerle günlük alınması gereken iyot miktarı ne kadardır?",
-                options: [
-                    "Bir çorba kaşığı kadar",
-                    "Bir tatlı kaşığı kadar",
-                    "Bir çay kaşığı kadar",
-                    "Toplu iğne başı kadar"
-                ],
-                    correctAnswer: 3
-            },
-            {
-                question: "Aşağıdakilerden hangisi çocuklarda raştizmde görülen bulgulardan değildir?",
-                options: [
-                    "Bingıldakları geç kapanır",
-                    "Dişleri geç çıkar",
-                    "Erken yürürler",
-                    "Hastalıklara kolay yakalanırlar"
-                ],
-                    correctAnswer: 2
-            },
-            {
-                question: "Türk dil kurumuna göre obezitenin kelime anlamı nedir?",
-                options: [
-                    "Şişman",
-                    "Çok yemek yiyen",
-                    "Obur",
-                    "Kilolu"
-                ],
-                    correctAnswer: 0
-            },
-            {
-                question: "Yetişkin kadınlarda vücut yağ oranı kaçın üzerine çıkarsa obezite olarak tanımlanır?",
-                options: [
-                    "Yüzde 15",
-                    "Yüzde 20",
-                    "Yüzde 25",
-                    "Yüzde 30"
-                ],
-                    correctAnswer: 3
-            },
-            {
-                question: "Aşağıdakilerden hangisi obezite gelişmesini etkileyen faktörlerden değildir?",
-                options: [
-                    "Enerji alımının fazlalığı",
-                    "Gıda çeşitliliğinin artması",
-                    "Enerji harcamasının azlığı",
-                    "Hormonal mekanizmalar"
-                ],
-                    correctAnswer: 1
-            },
-            {
-                question: "Aşağıdaki rahatsızlığın hangisine obez kişilerde sık rastlanılmaz?",
-                options: [
-                    "Anemi",
-                    "Hipertansiyon",
-                    "Kalp krizi",
-                    "Safra taşı"
-                ],
-                    correctAnswer: 0
-            },
-            {
-                question: "Erkeklerin bel çevresi kaçın üzerinde ise yüksek hastalık riski vardır?",
-                options: [
-                    "92 cm büyük ise",
-                    "96 cm büyük ise",
-                    "100 cm büyük ise",
-                    "102 cm büyük ise"
-                ],
-                    correctAnswer: 3
-            },
-            {
-                question: "Aşağıdakilerden hangisi yeme bozukluklarına neden olan sosyo-kültürel etmenlerden değildir?",
-                options: [
-                    "Nerdeyse her gün yayınlanan zayıflama reçeteleri",
-                    "Kadın ve erkekler için güzellik standartları zaman içinde değişmesi",
-                    "Kadınlar zayıf olmanın desteklendiği kültürel baskıdan daha fazla etkilenmektedir",
-                    "Yeme alışkanlıklarında değişme"
-                ],
-                    correctAnswer: 3
-            },
-            {
-                question: "Anoreksiya ile ilgili aşağıdaki ifadelerden hangisi doğrudur?",
-                options: [
-                    "Anoreksiya terimi duygusal nedenlere, nevroza ise iştah kaybına işaret etmektedir",
-                    "Anoreksiya terimi iştah kaybına, nevroza ise duygusal nedenlere işaret etmektedir",
-                    "Sosyal ortamlarda aile ile yemek yemeyi severler",
-                    "Düzenli adet görebilirler"
-                ],
-                    correctAnswer: 1
-            },
-            {
-                question: "Aşağıdakilerden hangisi bulimiya nevrozanın etiyolojik faktörlerinden değildir?",
-                options: [
-                    "Diyet yapma",
-                    "Alkolizm, erken ergenlik",
-                    "Sevgi dolu bir aile ortamı",
-                    "Cinsel kötüye kullanım"
-                ],
-                    correctAnswer: 2
-            },
-            {
-                question: "El sırtında yaraya yol açan rahatsızlık aşağıdakilerden hangisidir?",
-                options: [
-                    "Bulimiya nevroza",
-                    "Anoreksiya nevroza",
-                    "Nevrotik sendrom",
-                    "Tıkanırcasına yeme bozukluğu"
-                ],
-                    correctAnswer: 0
-            },
-            {
-                question: "Normalde besin olarak tüketilmeyen ve kabul edilmeyen maddelerin ısrarla ve sürekli olarak tüketilmesi alışkanlığı aşağıdakilerden hangisidir?",
-                options: [
-                    "Gut",
-                    "Reğürjitasyon",
-                    "Konstipasyon",
-                    "Pika"
-                ],
-                    correctAnswer: 3
-            },
-            {
-                question: "Maslow’un temel ihtiyaçlar hiyerarşisinde beslenme nerede yer alır?",
-                options: [
-                    "Fizyolojik ihtiyaçlar",
-                    "Güvenlik ihtiyacı",
-                    "Sosyal ihtiyaçlar",
-                    "Değer verilme/saygınlık ihtiyacı"
-                ],
-                    correctAnswer: 0
-            },
-            {
-                question: "Skorbit hastalığını tedavi eden vitamin aşağıdakilerden hangisidir?",
-                options: [
-                    "A vitamini",
-                    "B vitamini",
-                    "C vitamini",
-                    "D vitamini"
-                ],
-                    correctAnswer: 2
-            },
-            {
-                question: "Bireyde beslenme sorunu varsa aşağıdaki durumlardan hangisi ile karşılaşılmaz?",
-                options: [
-                    "Bağışıklık sistemi yetersiz hale gelir",
-                    "Yara iyileşmesi gecikir",
-                    "Kas gücünde yetersizlik görülür",
-                    "Psikolojik iyilik hali artar"
-                ],
-                    correctAnswer: 3
+                correctAnswer: 1
+
             },
 
             {
-                question: "Aşağıdakilerden hangisini yeterli ve dengeli beslenen bir kişinin dış görünüşünde görmeyiz?",
+                question: "Hybrid cryptosystem nedir?",
                 options: [
-                    "Hareketli dikkatli bakışlar",
-                    "Şişkin bir karın",
-                    "Canlı ve parlak saçlar",
-                    "Kuvvetli gelişimi normal kaslar"
+                    "Sadece simetrik şifreleme",
+                    "Sadece asimetrik şifreleme",
+                    "Simetrik ve asimetrik şifrelemenin birlikte kullanımı",
+                    "Sadece hash fonksiyonları",
+                    "Sadece steganografi"
                 ],
-                    correctAnswer: 1
+                correctAnswer: 2
+
             },
             {
                 question: "Hayatın sürmesi için hücre içinde oluşan tüm kimyasal değişmelere ne denir?",
