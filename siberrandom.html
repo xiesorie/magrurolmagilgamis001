@@ -1757,10 +1757,10 @@
                 const shuffledOptions = [...q.options];
                 const correctAnswerText = shuffledOptions[q.correctAnswer];
 
-                for (let i = shuffledOptions.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
-                }
+                //for (let i = shuffledOptions.length - 1; i > 0; i--) {
+                //    const j = Math.floor(Math.random() * (i + 1));
+                //    [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+                //}
 
                 const newCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
                 currentQuestions[index].shuffledCorrectAnswer = newCorrectIndex;
